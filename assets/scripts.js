@@ -7,7 +7,7 @@ const totalExpenses = document.getElementById("totalExpenses");
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
 function renderPengeluaran() {
-  expensesList.innerHTML = "";
+  expensesList.innerHTML = ""; // ini mencegah menduplikat data lama ke halaman tapi tidak di data local nya . . . 
   let total = 0;
 
   for (let i = 0; i < expenses.length; i++) {
@@ -30,7 +30,7 @@ function renderPengeluaran() {
 }
 
 form.addEventListener("submit", function (event) {
-  event.preventDefault(); // disini bikin data setelah di input itu ga ilang dulu sebelum di refresh
+  event.preventDefault();
 
   const nameValue = inputName.value;
   const nominalValue = inputNominal.value;
