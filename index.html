@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a href="#" class="nav-link active">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Buku Tamu</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Pengeluaran</a></li>
           </ul>
         </div>
       </div>
@@ -39,33 +39,36 @@
     <div class="container my-5" style="max-width: 800px">
       <main>
         <header class="mb-5 text-center">
-          <h1 class="text-dark fw-bold h3">Aplikasi Buku Tamu</h1>
+          <h1 class="text-dark fw-bold h3">Penginputan Pengeluaran dan Input Nominal/Harga</h1>
           <hr />
         </header>
 
         <div class="row g-4">
           <div class="col-md-5">
             <div class="bg-white p-4 rounded shadow-sm border">
-              <h3 class="text-dark h6 fw-bold mb-3 border-bottom pb-2">Kirim Pesan</h3>
-              <form id="guestbookForm">
+              <h3 class="text-dark h6 fw-bold mb-3 border-bottom pb-2">Input Pengeluaran</h3>
+              <form id="expenseForm">
                 <div class="mb-3">
-                  <label for="inputName" class="form-label small fw-bold">Nama</label>
-                  <input type="text" class="form-control form-control-sm" id="inputName" placeholder="Nama Anda" required />
+                  <label for="expenseName" class="form-label small fw-bold">Nama</label>
+                  <input type="text" class="form-control form-control-sm" id="expenseName" placeholder="Contoh : Beli Laptop" />
                 </div>
                 <div class="mb-3">
-                  <label for="inputMessage" class="form-label small fw-bold">Pesan</label>
-                  <textarea class="form-control form-control-sm" id="inputMessage" rows="3" placeholder="Pesan Anda..." required></textarea>
+                  <label for="expenseAmount" class="form-label small fw-bold">Nominal</label>
+                  <input type="number" class="form-control form-control-sm" id="expenseAmount" min="1" placeholder="Contoh : 1000000" />
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold">Kirim Pesan</button>
+                <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold">Kirim Pengeluaran</button>
               </form>
             </div>
           </div>
 
           <div class="col-md-7">
             <div class="bg-white p-4 rounded shadow-sm border h-100">
-              <h3 class="text-dark h6 fw-bold mb-3 border-bottom pb-2">Daftar Pesan Masuk</h3>
-              <ul id="messageList" class="list-group list-group-flush">
-                <!-- Data Dari inputan langsung muncul di bagian ini -->
+              <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                <h3 class="text-dark h6 fw-bold mb-0">Daftar Pengeluaran</h3>
+                <span id="totalExpenses" class="badge bg-danger fs-6 py-2 px-3">Rp 0</span>
+              </div>
+              <ul id="expensesList" class="list-group list-group-flush">
+                <!-- Data hasil looping JS akan muncul di sini -->
               </ul>
             </div>
           </div>
