@@ -37,7 +37,11 @@ function renderPengeluaran() {
     deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
 
     deleteButton.addEventListener("click", function () {
-      expenses.splice(i, 1);
+      // cara lama
+      // expenses.splice(i, 1);
+
+      // cara baru karna kita ambil per id yang cocok dengan id yang kita klik
+      expenses = expenses.filter(expense => expense.id !== item.id);
       updateStorageAndRender();
     });
 
