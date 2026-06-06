@@ -6,8 +6,14 @@ const totalExpenses = document.getElementById("totalExpenses");
 
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
+function deleteItem(index) {
+  expenses.splice(index, 1);
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+  renderPengeluaran();
+}
+
 function renderPengeluaran() {
-  expensesList.innerHTML = ""; // ini mencegah menduplikat data lama ke halaman tapi tidak di data local nya . . . 
+  expensesList.innerHTML = ""; // ini mencegah menduplikat data lama ke halaman tapi tidak di data local nya . . .
   let total = 0;
 
   for (let i = 0; i < expenses.length; i++) {
@@ -20,7 +26,12 @@ function renderPengeluaran() {
 
     newListItem.innerHTML = `
       <span class="text-dark fw-semibold small">${item.name}</span>
-      <span class="fw-bold text-danger small">Rp ${Number(item.amount).toLocaleString("id-ID")}</span>
+      <div class="d-flex align-items-center gap-3">
+        <span class="fw-bold text-danger small">Rp ${Number(item.amount).toLocaleString("id-ID")}</span>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem(${i})">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
     `;
 
     expensesList.appendChild(newListItem);
@@ -40,6 +51,7 @@ form.addEventListener("submit", function (event) {
     alert("isi dulu bro");
   } else {
     const newExpense = {
+      id: Date.now(),
       name: nameValue,
       amount: nominalValue,
     };
