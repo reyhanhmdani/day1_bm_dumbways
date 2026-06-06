@@ -6,8 +6,7 @@ const totalExpenses = document.getElementById("totalExpenses");
 
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
-function deleteItem(index) {
-  expenses.splice(index, 1);
+function updateStorageAndRender() {
   localStorage.setItem("expenses", JSON.stringify(expenses));
   renderPengeluaran();
 }
@@ -18,22 +17,33 @@ function renderPengeluaran() {
 
   for (let i = 0; i < expenses.length; i++) {
     let item = expenses[i];
+    total = total + item.amount;
 
-    total = total + Number(item.amount);
-
+    // Buat Container List Item nya
     const newListItem = document.createElement("li");
     newListItem.className = "list-group-item px-0 py-3 d-flex justify-content-between align-items-center";
 
-    newListItem.innerHTML = `
-      <span class="text-dark fw-semibold small">${item.name}</span>
-      <div class="d-flex align-items-center gap-3">
-        <span class="fw-bold text-danger small">Rp ${Number(item.amount).toLocaleString("id-ID")}</span>
-        <button class="btn btn-danger btn-sm" onclick="deleteItem(${i})">
-          <i class="fa-solid fa-trash"></i>
-        </button>
-      </div>
-    `;
+    // Harga dan Tombol
+    const rightContainer = document.createElement("div");
+    rightContainer.className = "d-flex align-items-center gap-3";
 
+    // kita masukkan teks nama dan harga
+    newListItem.innerHTML = `<span class="text-dark fw-semibold small">${item.name}</span>`;
+    rightContainer.innerHTML = `<span class="fw-bold text-danger small">Rp ${Number(item.amount).toLocaleString("id-ID")}</span>`;
+
+    // Tombol untuk delete Item
+    const deleteButton = document.createElement("button");
+    deleteButton.className = `"btn btn-danger btn-sm"`;
+    deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+
+    deleteButton.addEventListener("click", function () {
+      expenses.splice(i, 1);
+      updateStorageAndRender();
+    });
+
+    // panggil semua elemen tadi jadi satu
+    rightContainer.appendChild(deleteButton);
+    newListItem.appendChild(rightContainer);
     expensesList.appendChild(newListItem);
   }
 
@@ -44,10 +54,10 @@ form.addEventListener("submit", function (event) {
   event.preventDefault();
 
   const nameValue = inputName.value;
-  const nominalValue = inputNominal.value;
+  const nominalValue = Number(inputNominal.value); // konversi ke angka/number
 
   // validasi kalau input ga boleh kosong, dan memakai trim, supaya user ga bisa isen kalau "   " . . .q
-  if (nameValue.trim() === "" || Number(nominalValue) <= 0) {
+  if (nameValue.trim() === "" || nominalValue <= 0) {
     alert("isi dulu bro");
   } else {
     const newExpense = {
@@ -57,8 +67,7 @@ form.addEventListener("submit", function (event) {
     };
 
     expenses.push(newExpense);
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-    renderPengeluaran();
+    updateStorageAndRender();
     form.reset();
   }
 });
