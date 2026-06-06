@@ -17,7 +17,7 @@ function renderPengeluaran() {
 
   for (let i = 0; i < expenses.length; i++) {
     let item = expenses[i];
-    total = Number(item.amount);
+    total = total + item.amount;
 
     // Buat Container List Item nya
     const newListItem = document.createElement("li");
@@ -41,7 +41,7 @@ function renderPengeluaran() {
       // expenses.splice(i, 1);
 
       // cara baru karna kita ambil per id yang cocok dengan id yang kita klik
-      expenses = expenses.filter(expense => expense.id !== item.id);
+      expenses = expenses.filter((expense) => expense.id !== item.id);
       updateStorageAndRender();
     });
 
