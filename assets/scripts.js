@@ -17,7 +17,7 @@ function renderPengeluaran() {
 
   for (let i = 0; i < expenses.length; i++) {
     let item = expenses[i];
-    total = total + item.amount;
+    total = Number(item.amount);
 
     // Buat Container List Item nya
     const newListItem = document.createElement("li");
@@ -33,7 +33,7 @@ function renderPengeluaran() {
 
     // Tombol untuk delete Item
     const deleteButton = document.createElement("button");
-    deleteButton.className = `"btn btn-danger btn-sm"`;
+    deleteButton.className = "btn btn-danger btn-sm";
     deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
 
     deleteButton.addEventListener("click", function () {
