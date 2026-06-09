@@ -1,80 +1,71 @@
-const form = document.getElementById("expenseForm");
-const inputName = document.getElementById("expenseName");
-const inputNominal = document.getElementById("expenseAmount");
-const expensesList = document.getElementById("expensesList");
-const totalExpenses = document.getElementById("totalExpenses");
+"use strict";
 
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+// Data Dummy
 
-function updateStorageAndRender() {
-  localStorage.setItem("expenses", JSON.stringify(expenses));
-  renderPengeluaran();
-}
+const students = [
+  { name: "Rover", class: "Fullstack-dev", score: 95 },
+  { name: "Jinhsi", class: "Mobile-dev", score: 98 },
+  { name: "Yinlin", class: "Dev-ops", score: 88 },
+  { name: "Jiyan", class: "Backend-dev", score: 92 },
+  { name: "Verina", class: "Frontend-dev", score: 85 },
+  { name: "Calcharo", class: "Fullstack-dev", score: 78 },
+  { name: "Encore", class: "UI/UX", score: 90 },
+  { name: "Sanhua", class: "Backend-dev", score: 82 },
+  { name: "Baizhi", class: "Data Science", score: 89 },
+  { name: "Jianxin", class: "Mobile-dev", score: 94 },
+];
 
-function renderPengeluaran() {
-  expensesList.innerHTML = ""; // ini mencegah menduplikat data lama ke halaman tapi tidak di data local nya . . .
-  let total = 0;
+// dom (ambil element yang di butuhkan)
+const wadahTable = document.getElementById("studentTableBody");
+const kolomCari = document.getElementById("searchInput");
+const teksRataRata = document.getElementById("averageScore");
 
-  for (let i = 0; i < expenses.length; i++) {
-    let item = expenses[i];
-    total = total + item.amount;
+/**
 
-    // Buat Container List Item nya
-    const newListItem = document.createElement("li");
-    newListItem.className = "list-group-item px-0 py-3 d-flex justify-content-between align-items-center";
-
-    // Harga dan Tombol
-    const rightContainer = document.createElement("div");
-    rightContainer.className = "d-flex align-items-center gap-3";
-
-    // kita masukkan teks nama dan harga
-    newListItem.innerHTML = `<span class="text-dark fw-semibold small">${item.name}</span>`;
-    rightContainer.innerHTML = `<span class="fw-bold text-danger small">Rp ${Number(item.amount).toLocaleString("id-ID")}</span>`;
-
-    // Tombol untuk delete Item
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "btn btn-danger btn-sm";
-    deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-
-    deleteButton.addEventListener("click", function () {
-      // cara lama
-      // expenses.splice(i, 1);
-
-      // cara baru karna kita ambil per id yang cocok dengan id yang kita klik
-      expenses = expenses.filter((expense) => expense.id !== item.id);
-      updateStorageAndRender();
-    });
-
-    // panggil semua elemen tadi jadi satu
-    rightContainer.appendChild(deleteButton);
-    newListItem.appendChild(rightContainer);
-    expensesList.appendChild(newListItem);
+ * @param {Array} daftarMurid 
+ */
+function hitungRataRata(daftarMurid) {
+  if (daftarMurid.length === 0) {
+    teksRataRata.innerText = "0";
+    return;
   }
 
-  totalExpenses.innerText = `Rp ${Number(total).toLocaleString("id-ID")}`;
+  const totalNilai = daftarMurid.reduce((total, murid) => {
+    return total + murid.score;
+  }, 0);
+
+  const rataRata = totalNilai / daftarMurid.length;
+  teksRataRata.innerText = rataRata.toFixed(2);
 }
 
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
+function gambarTabel(daftarMurid) {
+  const barisTabel = daftarMurid.map((murid, indeks) => {
+    return `
+            <tr>
+                <td>${indeks + 1}</td>
+                <td class="fw-semibold">${murid.name}</td>
+                <td><span class="badge bg-secondary">${murid.class}</span></td>
+                <td class="fw-bold text-success">${murid.score}</td>
+            </tr>
+        `;
+  });
 
-  const nameValue = inputName.value;
-  const nominalValue = Number(inputNominal.value); // konversi ke angka/number
+  wadahTable.innerHTML = barisTabel.join("");
 
-  // validasi kalau input ga boleh kosong, dan memakai trim, supaya user ga bisa isen kalau "   " . . .q
-  if (nameValue.trim() === "" || nominalValue <= 0) {
-    alert("isi dulu bro");
-  } else {
-    const newExpense = {
-      id: Date.now(),
-      name: nameValue,
-      amount: nominalValue,
-    };
+  // Otomatis hitung rata-rata setiap kali tabel digambar
+  hitungRataRata(daftarMurid);
+}
 
-    expenses.push(newExpense);
-    updateStorageAndRender();
-    form.reset();
-  }
+kolomCari.addEventListener("input", function (event) {
+  const kataKunci = event.target.value.toLowerCase().trim();
+
+  // Menggunakan .filter() untuk menyaring nama
+  const hasilSaring = students.filter((murid) => {
+    return murid.name.toLowerCase().includes(kataKunci);
+  });
+
+  gambarTabel(hasilSaring);
 });
 
-// Panggil fungsi ini agar data dirender saat halaman pertama kali dibuka / direfresh
-renderPengeluaran();
+// Jalankan pertama kali saat aplikasi dibuka
+gambarTabel(students);
