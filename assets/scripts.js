@@ -60,11 +60,11 @@ kolomCari.addEventListener("input", function (event) {
   const kataKunci = event.target.value.toLowerCase().trim();
 
   // Menggunakan .filter() untuk menyaring nama
-  const hasilSaring = students.filter((murid) => {
+  const hasilCari = students.filter((murid) => {
     return murid.name.toLowerCase().includes(kataKunci);
   });
 
-  gambarTabel(hasilSaring);
+  gambarTabel(hasilCari);
 });
 
 // Jalankan pertama kali saat aplikasi dibuka
