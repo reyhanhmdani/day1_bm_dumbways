@@ -40,7 +40,7 @@ function hitungRataRata(daftarMurid) {
 
 function gambarTabel(daftarMurid) {
   const barisTabel = daftarMurid.map((murid, indeks) => {
-    return `
+    return /*html*/ `
             <tr>
                 <td>${indeks + 1}</td>
                 <td class="fw-semibold">${murid.name}</td>
